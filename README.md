@@ -69,7 +69,7 @@ app.post('/login', function (req, res) {
 
 ## Advanced Usage
 
-Wellformed also supports filters and dot notation for inputs using array notation.
+Wellformed supports dot notation for inputs using array notation.
 
 Let's take a payment form for example:
 
