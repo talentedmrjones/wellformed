@@ -1,0 +1,26 @@
+{
+  "name": "wellformed",
+  "homepage": "",
+  "author": {
+    "name": "Richard Jones",
+    "url": "http://github.com/talentedmrjones"
+  },
+  "description": "Loosely based on Zend Framework's Zend_Form, wellformed provides easy form validation, filtering, and packaging of errors and values.",
+  "keywords": [
+  ],
+  "version": "0.2",
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "http://rem.mit-license.org"
+    }
+  ],
+  "main": "./index",
+  "dependencies": {
+    "validator": ">= 0.4.17",
+    "underscore":">= 1.4.2"
+  },
+  "engines": {
+    "node": "*"
+  }
+}

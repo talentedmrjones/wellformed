@@ -1,0 +1,1 @@
+module.exports.form = require('./lib/form')
