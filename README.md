@@ -6,7 +6,7 @@ Wellformed provides easy form validation, filtering, and packaging of errors and
 ## 1. Build a Form
 
 forms/loginform.js
-
+```javascript
     var util = require('util'),
     Form = require('wellformed').Form,
     LoginForm = function () {
@@ -41,6 +41,7 @@ forms/loginform.js
     
     // expose
     module.exports = LoginForm;
+```
 
 ## 2. Use Form in a Controller
 
