@@ -1,4 +1,4 @@
-# wellformed v0.2
+# wellformed v1.1.0
 
 Wellformed provides easy form validation, filtering, and packaging of errors and values. Keep your controllers and models clean by separating form logic.
 
