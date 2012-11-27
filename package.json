@@ -1,13 +1,15 @@
 {
   "name": "wellformed",
-  "homepage": "",
+  "homepage": "https://github.com/talentedmrjones/wellformed",
   "author": {
     "name": "Richard Jones",
     "url": "http://github.com/talentedmrjones"
   },
-  "description": "Loosely based on Zend Framework's Zend_Form, wellformed provides easy form validation, filtering, and packaging of errors and values.",
-  "keywords": [
-  ],
+  "description": "Wellformed provides easy form validation, filtering, and packaging of errors and values. Keep your controllers and models clean by separating form logic.",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/talentedmrjones/wellformed.git"
+  },
   "version": "0.2",
   "licenses": [
     {
