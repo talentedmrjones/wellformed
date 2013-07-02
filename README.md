@@ -1,4 +1,4 @@
-# wellformed v1.1.0
+# wellformed v2.0.0
 
 Wellformed provides easy form validation, filtering, and packaging of errors and values. Keep your controllers and models clean by separating form logic.
 
@@ -8,40 +8,32 @@ Wellformed provides easy form validation, filtering, and packaging of errors and
 forms/loginform.js
 
 ```javascript
-var util = require('util'),
-Form = require('wellformed').Form,
-LoginForm = function () {
-  
-  // inherit properties from super
-  Form.apply(this,arguments);
+var Form = require('wellformed').Form,
+LoginForm = module.exports = Form.extend({
 
-  this.elements = {
+  initialize: function () {
     
-    // keys map directly to input names
-    email:{
-      required:true,
-      validators:[
-        {type:'isEmail', message:"Please enter a valid email."}
-      ]
-    }, // email
-    
-    pass:{
-      required:true,
-      validators:[
-        {type:"len",args:[4], message:"Please enter a valid password."}
-      ]
-    } // pass
-    
-    
-  }; // elements
+    this.elements = {
+      // keys map directly to input names
+      email:{
+        required:true,
+        validators:[
+          {type:'isEmail', message:"Please enter a valid email."}
+        ]
+      }, // email
 
-}; // LoginForm
+      pass:{
+        required:true,
+        validators:[
+          {type:"len",args:[4], message:"Please enter a valid password."}
+        ]
+      } // pass
+    
+    }; // elements
 
-// LoginForm should extend Form
-util.inherits(LoginForm, Form);
+  } // initialize
 
-// expose
-module.exports = LoginForm;
+}); // LoginForm
 ```
 
 ## 2. Use Form in a Controller
@@ -90,83 +82,73 @@ Let's take a payment form for example:
 
 ```javascript
 
-var util = require('../lib/util')
-,Form = require('wellformed').form
-,OrderForm = function () {
+var Form = require('wellformed').Form
+,OrderForm = module.exports = Form.extend({
+  initialize: function () {
 
-  this.years = []
-  this.date = new Date(),
-  this.year = this.date.getFullYear();
+    this.years = []
+    this.date = new Date(),
+    this.year = this.date.getFullYear();
 
-  for (var i = 0; i < 12; i++) {
+    for (var i = 0; i < 12; i++) {
       this.years.push(i + this.year);
-  }
-
-  // inherit properties
-  Form.apply(this,arguments);
-
-  this.elements = {
-    
-    // Ignoring name and billing address for the sake of brevity
-    
-    "payment.number":{
-      required:true,
-      validators:[
-        {type:'isCreditCard', message:"Enter a valid credit card number."}
-      ]
-    },
-    
-    "payment.exp_month":{
-      required:true,
-      validators:[
-        {type:'regex',args:['01|02|03|04|05|06|07|08|09|10|11|12'],message:"Enter a valid expiration month."}
-      ]
-    },
-    
-    "payment.exp_year":{
-      required:true,
-      validators:[
-        {type:'regex',args:[this.years.join('|')],message:"Enter a valid expiration year."}
-      ]
-    },
-    
-    "payment.cvc":{
-      required:true,
-      validators:[
-        {type:'regex',args:['[0-9]{3,4}'],message:"Enter a valid CVC."}
-      ]
     }
 
+    this.elements = {
+        
+        // Ignoring name and billing address for the sake of brevity
+        
+        "payment.number":{
+          required:true,
+          validators:[
+            {type:'isCreditCard', message:"Enter a valid credit card number."}
+          ]
+        },
+        
+        "payment.exp_month":{
+          required:true,
+          validators:[
+            {type:'regex',args:['01|02|03|04|05|06|07|08|09|10|11|12'],message:"Enter a valid expiration month."}
+          ]
+        },
+        
+        "payment.exp_year":{
+          required:true,
+          validators:[
+            {type:'regex',args:[this.years.join('|')],message:"Enter a valid expiration year."}
+          ]
+        },
+        
+        "payment.cvc":{
+          required:true,
+          validators:[
+            {type:'regex',args:['[0-9]{3,4}'],message:"Enter a valid CVC."}
+          ]
+      }
+    }; // elements
+  }, // initialize
+  
+  // Override the default isValid method to provide custom validation after individual fields have been checked
+  isValid: function () {
+
+    // run form validation through super-constructor isValid method first
+    var isValid = Form.prototype.isValid.apply(this, arguments),
+    self = this;
     
-  }; // elements
-  
-}; // OrderForm
+    // ensure expiration is right: if year == this year, exp_month should be > than this month
+    if (isValid) {
+      var values = this.getValues();
+      if (values.payment.exp_year == this.year && values.payment.exp_month < this.date.getMonth()) {
+        isValid = false;
+        this.errors.payment={exp_month: ["It appears this card has expired."]};
+      }  
+    }
+    
+    return isValid;
+    
+  } // isValid
 
-
-util.inherits(OrderForm, Form);
-
-// Override the default isValid method to provide custom validation after individual fields have been checked
-OrderForm.prototype.isValid = function () {
-
-  // run form validation through super isValid method first
-  var isValid = Form.prototype.isValid.apply(this, arguments),
-  self = this;
-  
-  // ensure expiration is right: if year == this year, exp_month should be > than this month
-  if (isValid) {
-    var values = this.getValues();
-    if (values.payment.exp_year == this.year && values.payment.exp_month < this.date.getMonth()) {
-      isValid = false;
-      this.errors.payment={exp_month: ["It appears this card has expired."]};
-    }  
-  }
-  
-  return isValid;
-  
-};
-
-module.exports = OrderForm;
-
+}); // Form.extend
 
 ```
 
