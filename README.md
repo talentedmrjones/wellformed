@@ -42,7 +42,7 @@ LoginForm = module.exports = Form.extend({
 app.post('/login', function (req, res) {
   
   var LoginForm = require('./forms/loginform');
-  var Form = new LoginForm(req);
+  var Form = new LoginForm(req.body);
   var isValid = Form.isValid();
   
   if (!isValid) {
