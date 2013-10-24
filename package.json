@@ -3,13 +3,17 @@
   "homepage": "https://github.com/talentedmrjones/wellformed",
   "author": {
     "name": "Richard Jones",
-    "url": "http://github.com/talentedmrjones"
+    "url": "https://github.com/talentedmrjones"
   },
   "contributors": [
     {
       "name": "Richard Jones",
-      "email": "the@talentedmrjones.com"
-    }
+      "url": "https://github.com/talentedmrjones"
+    },
+    {
+      "name": "Dan Rowe",
+      "url": "https://github.com/draco2003"
+    } 
   ],
   "description": "Wellformed provides easy form validation, filtering, and packaging of errors and values. Keep your controllers and models clean by separating form logic.",
   "repository": {
